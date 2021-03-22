@@ -72,8 +72,15 @@ class LinkedList
   def remove(key)
   end
 
-  def each
-    
+  def each(&prc)
+    current = @head
+    nextT = @head.next
+    yields = []
+    while nextT.val != nil
+      prc.call(nextT)
+      current = nextT
+      nextT = current.next
+    end
   end
 
   # uncomment when you have `each` working and `Enumerable` included
