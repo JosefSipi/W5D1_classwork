@@ -92,7 +92,6 @@ class LinkedList
   def each(&prc)
     current = @head
     nextT = @head.next
-    yields = []
     while nextT.val != nil
       prc.call(nextT)
       current = nextT

@@ -16,6 +16,11 @@ class HashMap
   end
 
   def set(key, val)
+    if include?(key)
+      bucket(key).update(key, val)
+    else
+      bucket(key).append(key, val)
+    end
   end
 
   def get(key)
@@ -29,6 +34,9 @@ class HashMap
   end
 
   def delete(key)
+    if include?(key)
+      bucket(key).remove(key)
+    end
   end
 
   def each(&prc)
@@ -36,13 +44,10 @@ class HashMap
     i = 0
     while i < num_buckets
       @store[i].each do |node|
-        if node != self.head && node != self.tail
-          prc.call(node.key, node.value)
-        end
+        prc.call(node.key, node.val)
       end
-      i += i
+      i += 1
     end
-
   end
 
   # uncomment when you have Enumerable included
@@ -67,5 +72,6 @@ class HashMap
 
   def bucket(key)
     # optional but useful; return the bucket corresponding to `key`
+    @store[key.hash % num_buckets]
   end
 end
