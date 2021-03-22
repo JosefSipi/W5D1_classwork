@@ -19,8 +19,13 @@ class HashMap
     if include?(key)
       bucket(key).update(key, val)
     else
+      if count + 1 > num_buckets
+        resize!
+      end
       bucket(key).append(key, val)
+      @count += 1
     end
+
   end
 
   def get(key)
@@ -36,6 +41,7 @@ class HashMap
   def delete(key)
     if include?(key)
       bucket(key).remove(key)
+      @count -= 1
     end
   end
 
@@ -68,6 +74,17 @@ class HashMap
   end
 
   def resize!
+    new_arr = []
+    self.each do |k,v|
+      new_arr << [k,v]
+    end
+    @store = Array.new(num_buckets * 2) { LinkedList.new } 
+    @count = 0
+    new_arr.each do |sub|
+      k = sub[0]
+      v = sub[1]
+      self.set(k,v)
+    end
   end
 
   def bucket(key)
