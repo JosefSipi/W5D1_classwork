@@ -47,11 +47,17 @@ class LinkedList
   end
 
   def get(key)
+    self.each do |node|
+      if node.key == key
+        return node.val
+      end
+    end
+    nil
   end
 
   def include?(key)
-    self.each do |k,v|
-      if k == key
+    self.each do |node|
+      if node.key == key
         return true
       end
     end
@@ -67,9 +73,20 @@ class LinkedList
   end
 
   def update(key, val)
+    self.each do |node|
+      if node.key == key
+        node.val = val
+      end
+    end
   end
 
   def remove(key)
+    self.each do |node|
+      if node.key == key
+        node.prev.next = node.next
+        node.next.prev = node.prev
+      end
+    end
   end
 
   def each(&prc)
@@ -84,7 +101,7 @@ class LinkedList
   end
 
   # uncomment when you have `each` working and `Enumerable` included
-  # def to_s
-  #   inject([]) { |acc, link| acc << "[#{link.key}, #{link.val}]" }.join(", ")
-  # end
+  def to_s
+    inject([]) { |acc, link| acc << "[#{link.key}, #{link.val}]" }.join(", ")
+  end
 end
